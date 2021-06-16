@@ -44,7 +44,7 @@ spring:
 
   #  mybatis-plus的日志显示
 mybatis-plus:
-  #  configuration.log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration.log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   #逻辑删除
   global-config:
     db-config:
