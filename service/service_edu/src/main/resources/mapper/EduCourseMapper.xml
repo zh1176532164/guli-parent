@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.eduservice.mapper.EduCourseMapper">
+
+    <resultMap id="SubjectOne" type="com.atguigu.eduservice.entity.vo.CoursePublishVo">
+        <result column="title" property="title"></result>
+        <result column="price" property="price"></result>
+        <result column="lesson_num" property="lessonNum"></result>
+        <result column="cover" property="cover"></result>
+        <result column="teacherName" property="teacherName"></result>
+        <result column="subjectName" property="subjectName"></result>
+        <result column="subjectParentName" property="subjectParentName"></result>
+    </resultMap>
+
+
+    <select id="getCoursePublishVo" parameterType="string"  resultType ="com.atguigu.eduservice.entity.vo.CoursePublishVo">
+        SELECT ec.`title`,ec.`price`,ec.`lesson_num`AS lessonNum,ec.`cover`,
+               ecd.`description`,
+               et.`name` AS teacherName,
+               es1.`title` AS subjectName,
+               es2.`title` AS subjectParentName
+        FROM
+            edu_course ec
+                LEFT OUTER JOIN  edu_course_description ecd ON  ecd.`id`= ec.`id`
+                LEFT OUTER JOIN  edu_teacher et ON  et.`id`= ec.`teacher_id`
+                LEFT OUTER JOIN  edu_subject es1 ON  es1.`id`= ec.`subject_id`
+                LEFT OUTER JOIN  edu_subject es2 ON  es2.`id`= ec.`subject_parent_id`
+        WHERE ec.`id`=${ID}
+    </select>
+    <select id="getCourseWebVo" resultType="com.atguigu.eduservice.controller.front.vo.CourseWebVo">
+
+        SELECT ec.`title`,ec.`price`,ec.`lesson_num`AS lessonNum,ec.`cover`,ec.`buy_count` AS buyCount,ec.`view_count` AS viewCount,
+               ecd.`description`,
+               et.`id` AS teacherId,et.`name` AS teacherName,et.`intro`,et.`avatar`,
+               es1.`id` AS subjectLevelOneId,es1.`title` AS subjectLevelOne,
+               es2.`id` AS subjectLevelTwoId,es2.`title` AS subjectLevelTwo
+        FROM
+            edu_course ec
+                LEFT OUTER JOIN  edu_course_description ecd ON  ecd.`id`= ec.`id`
+                LEFT OUTER JOIN  edu_teacher et ON  et.`id`= ec.`teacher_id`
+                LEFT OUTER JOIN  edu_subject es1 ON  es1.`id`= ec.`subject_id`
+                LEFT OUTER JOIN  edu_subject es2 ON  es2.`id`= ec.`subject_parent_id`
+        WHERE ec.`id`=${ID}
+
+    </select>
+    <select id="getCourseOrder" resultType="com.atguigu.eduservice.entity.order.EduCourseOrder">
+        SELECT ec.`id` AS courseId,ec.`title`,ec.`price`,ec.`cover`,
+              et.`name` AS teacherName
+        FROM
+            edu_course ec
+                LEFT OUTER JOIN  edu_teacher et ON  et.`id`= ec.`teacher_id`
+        WHERE ec.`id`=${ID}
+    </select>
+</mapper>

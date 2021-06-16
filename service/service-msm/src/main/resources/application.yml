@@ -1,0 +1,86 @@
+server:
+  port: 8006
+
+spring:
+  #项目名称
+  application:
+    name: service-msm
+
+  #Nacos服务器连接
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  #开发环境
+  profiles:
+    active: dev
+
+  # 数据库设置
+  datasource:
+    password: root
+    username: root
+    url: jdbc:mysql://localhost:3306/guli?serverTimezone=GMT%2B8&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  #返回jion的全局时间格式 默认join的时间是世界时间
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  # redis 配置
+  redis:
+    host: 192.168.55.1
+    port: 6379
+    database: 0
+    timeout: 180000
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+
+#  mybatis-plus的日志显示
+mybatis-plus:
+  configuration.log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #逻辑删除
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+  mapper-locations: classpath*:mapper/*.xml
+  #阿里云 OSS
+  #不同的服务器，地址不同
+#  aliyun.oss.file.endpoint=your endpoint
+#  aliyun.oss.file.keyid=your accessKeyId
+#  aliyun.oss.file.keysecret=your accessKeySecret
+#  #bucket可以在控制台创建，也可以使用java代码创建
+#  aliyun.oss.file.bucketname=guli-file
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      keyid: LTAI5tN1hcuVmn1zczKRScTb
+      keysecret: 0AuXUHKZMUxSFtitC54IiQgM2WhoZx
+      bucketname: yantao-zhang
+#日志信息
+#logging:
+#  level: debug
+
+#开启熔断器机制 消费者使用
+#feign:
+#  hystrix:
+#    enabled: true
+
+#设置hystrix超时时间，默认1000ms
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 6000
+
+
